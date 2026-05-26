@@ -1,12 +1,9 @@
-# Phishing Awareness Analysis Project
-# DecodeLabs - Cyber Security Project 3
+
 
 import re
 from urllib.parse import urlparse
 
-# -----------------------------
-# Sample Emails / Messages
-# -----------------------------
+
 messages = [
     """
     Dear User,
@@ -42,9 +39,7 @@ messages = [
     """
 ]
 
-# -----------------------------
-# Suspicious Keywords
-# -----------------------------
+
 suspicious_keywords = [
     "urgent",
     "verify",
@@ -59,45 +54,41 @@ suspicious_keywords = [
     "bank account"
 ]
 
-# -----------------------------
-# Function to Extract URLs
-# -----------------------------
+
 def extract_urls(text):
     url_pattern = r'https?://[^\s]+'
     return re.findall(url_pattern, text)
 
-# -----------------------------
-# Function to Analyze Message
-# -----------------------------
+
 def analyze_message(message):
     red_flags = []
 
-    # Convert to lowercase
+   
     lower_msg = message.lower()
 
-    # Check suspicious keywords
+  
     for keyword in suspicious_keywords:
         if keyword in lower_msg:
             red_flags.append(f"Suspicious keyword found: '{keyword}'")
 
-    # Extract URLs
+    
     urls = extract_urls(message)
 
     for url in urls:
         parsed = urlparse(url)
         domain = parsed.netloc
 
-        # Check suspicious domains
+       
         suspicious_domains = [".xyz", ".ru", ".tk"]
 
         if any(domain.endswith(ext) for ext in suspicious_domains):
             red_flags.append(f"Suspicious domain detected: {domain}")
 
-        # Check for HTTP instead of HTTPS
+      
         if parsed.scheme == "http":
             red_flags.append(f"Insecure link (HTTP): {url}")
 
-    # Result
+    
     print("=" * 60)
     print("MESSAGE:")
     print(message.strip())
@@ -121,8 +112,6 @@ def analyze_message(message):
     print("\n")
 
 
-# -----------------------------
-# Run Analysis
-# -----------------------------
+
 for msg in messages:
     analyze_message(msg)
